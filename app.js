@@ -1,5 +1,5 @@
 var express = require('express');
-"1s17",var path = require('path');
+var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -40,7 +40,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error ..');
+  res.render('error');
 });
 
 module.exports = app;
