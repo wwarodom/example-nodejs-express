@@ -29,4 +29,16 @@ jobs:
               docker push wwarodom/example-nodejs-circle:latest
               docker push wwarodom/example-nodejs-circle:${CIRCLE_SHA1}
 
+      - run: 
+          name: "Call to rancher to deploy"
+          command: |
+             docker run --rm -it \
+               -e CATTLE_ACCESS_KEY="$CATTLE_ACCESS_KEY" \
+               -e CATTLE_SECRET_KEY="$CATTLE_SECRET_KEY" \
+               -e CATTLE_URL="http://178.128.90.205:8081/" \
+               etlweather/gaucho upgrade "1st11" \
+               --imageUuid 'docker:wwarodom/example-nodejs-circle:latest' \
+               --batch_size 3 --start_first \
+               --auto_complete --timeout 600 \
+               /
       - run: echo Done
