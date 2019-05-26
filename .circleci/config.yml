@@ -45,7 +45,7 @@ jobs:
                -e CATTLE_URL="http://178.128.90.205:8081/" \
                etlweather/gaucho upgrade "1st17" \
                --imageUuid 'docker:wwarodom/example-nodejs-circle:latest' \
-               --batch_size 3 --start_first \
+               --batch_size 1 --start_first \
                --auto_complete --timeout 600 \
                /
       - run: echo Done
