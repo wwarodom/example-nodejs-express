@@ -1,23 +1,6 @@
 version: 2
 jobs:
   build:
-    - run: echo Build
-      docker:
-      - image: circleci/node:8.11.1-stretch
-      working_directory: ~/repo
-      steps:
-         - checkout
-         - restore_cache:
-            keys:
-              - v1-dependencies-{{ checksum "package.json" }}
-              # fallback 
-              - v1-dependencies-
-        - run: npm install
-        - save_cache:
-            paths:
-              - node_modules
-            key: v1-dependencies-{{ checksum "package.json" }}
-  test:  
     docker:
       - image: circleci/node:8.11.1-stretch
     working_directory: ~/repo
@@ -35,10 +18,6 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run: npm test
-
-    ship:
-      - run: echo Ship
-    deploy:  
       - setup_remote_docker
       - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
       - run:
@@ -84,22 +63,3 @@ jobs:
                 echo "This is ${CIRCLE_BRANCH}"
               fi   
       - run: echo Done
-
-workflows:
-  version: 2
-  myworkflow:
-    jobs:
-      - build
-      - test: 
-          requires:
-            - build
-      - ship:
-          requires:
-            - build
-            - test
-      - deploy:
-          type: approval
-          requires:
-            - build
-            - test
-            - ship
